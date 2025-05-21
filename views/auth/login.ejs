@@ -1,0 +1,92 @@
+<div class="row my-5 justify-content-center">
+  <div class="col-8 col-md-6 col-lg-4">
+    <h3 class="text-center mb-5">로그인</h3>
+    <form id="frm" method="post">
+      <div class="input-group my-2">
+        <div class="input-group-text">이 메 일</div>
+        <input class="form-control" id="uemail" value="ye6350@aa.com" />
+      </div>
+      <div class="input-group">
+        <div class="input-group-text">비밀번호</div>
+        <input
+          class="form-control"
+          id="password"
+          type="password"
+          value="123456"
+        />
+      </div>
+      </form>
+        <div class="my-3">
+          <button id="default" type="button" class="btn btn-success w-100">로그인</button>
+        </div>
+        <div class="my-3">
+          <button id="google" type="button" class="btn btn-primary w-100">Google</button>
+        </div>
+        <div class="my-3">
+          <button id="kakao" type="button" class="btn btn-warning w-100">Kakao</button>
+        </div>
+    <div class="text-end mt-3"><a href="/users/join">회원가입</a></div>
+  </div>
+</div>
+<script type="module">
+  import AuthLogic, { loginGoogle } from '/javascripts/authLogic.js'
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js"
+  import { app } from '/javascripts/firebase.js'
+  const authLogic = new AuthLogic() // 사용자 정의 클래스
+  //const xhr = new XMLHttpRequest()//브라우저제공 클래스
+  const auth = getAuth() //AuthLogic 생성자 함수 선언된 전변
+  console.log(auth);
+  //사용자가 입력한 이메일과 비번을 받아오기
+  const uEmail = document.querySelector("#uemail").value
+  const uPassword = document.querySelector("#password").value
+  //비밀번호 인증 로그인
+  const login = document.querySelector("#default")
+  login.addEventListener('click',() =>{
+    //처리
+    console.log('비밀번호 로그인'+uEmail+", "+uPassword)
+    signInWithEmailAndPassword(auth, uEmail, uPassword)
+    .then((data) => {
+      // Signed in 
+      const user = data.user;
+      console.log(user);
+      // ...
+      localStorage.setItem("uid", user.uid)
+      localStorage.setItem("email", user.email)
+      document.querySelector("#login").style.display = 'none'
+      document.querySelector("#logout").style.display = 'block'
+      document.querySelector("#myEmail").style.display = 'block'
+      document.querySelector("#myEmail").querySelector("a").textContent = data.user.email
+      //location.reload()
+      location.href = "/"
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+  }) // 이메일과 비번으로 로그인 하기
+
+  //module을 선언하면 defer생략할 수 있다. - 비동기가 디폴트
+  window.onLogin = async() => {
+    console.log('onLogin');
+    //console.log(auth);
+    console.log(authLogic.auth);
+    console.log(authLogic.googleProvider);
+    //authLogic에 있는 로그인 함수를 호출하기
+    try {
+      //구글 로그인이 성공하면 프로필 정보를 주입 받아온다.
+      const user = await loginGoogle(authLogic.auth, authLogic.googleProvider)
+      console.log(user);
+      console.log(user.uid);
+      console.log(user.displayName);
+      localStorage.setItem("userId", user.uid)
+      localStorage.setItem("displayName", user.displayName)
+      if(user.uid){
+        //goToMaker(user.uid)
+        location.href="/"
+      }
+
+    } catch (error) {
+      console.error(error+':로그인 오류입니다.');
+    }
+  }
+</script>

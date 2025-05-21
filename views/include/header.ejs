@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="#">
+      <img src="../../../../images/testimonial/man4.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill"> 
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">도서검색</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="#">게시판</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <!-- 로그인, 로그아웃, 로그인한 이메일주소 -->
+      <div class="d-flex">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item" id="login">
+            <a class="nav-link active" aria-current="page" href="#">로그인</a>
+          </li>              
+          <li class="nav-item" id="myEmail" style="display: none;">
+            <a class="nav-link active" aria-current="page" href="#">현사용자이메일주소</a>
+          </li>              
+          <li class="nav-item" id="logout" style="display: none;">
+            <a class="nav-link active" aria-current="page" href="#">로그아웃</a>
+          </li>
+        </ul>
+      </div>
+      <!-- 로그인, 로그아웃, 로그인한 이메일주소 -->
+    </div>
+  </div>
+</nav>
+<script type="module">
+//여기는 자바스크립트 영역이다.
+//localStorage에 email값이 있어?
+const myEmail = localStorage.getItem("email")
+// 세션에 저장된 이메일 정보를 출력
+// index.js(라우터) - req.session.email
+const semail = '<%=email %>'
+console.log("세션에 저장된 email은 "+semail);
+if(myEmail){//email이 존재한다. 그러면 로그인을 한 사람이다.
+  //로그인은 안보이게 로그아웃은 보이게하고 또 이메일도 출력해준다. 
+  document.querySelector("#login").style.display = 'none'
+  document.querySelector("#logout").style.display = 'block'
+  document.querySelector("#myEmail").style.display = 'block'
+  document.querySelector("#myEmail").querySelector("a").textContent = myEmail
+}
+else{
+  document.querySelector("#login").style.display = 'block'
+  document.querySelector("#logout").style.display = 'none'
+  document.querySelector("#myEmail").style.display = 'none'
+}
+</script>
