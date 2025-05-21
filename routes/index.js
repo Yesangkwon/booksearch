@@ -15,6 +15,11 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Home', pageName: 'auth/login.ejs', email: null });
   }
 });
+// 구글계정이거나 비밀번호로 로그인 한 경우 home 처리 하기
+// rendering할 때 마지막 자리에 email을 생략하면 페이지에 email undefined를 보게 된다.
+router.get('/home', function(req, res, next){
+  res.render('index',{title: 'Home', pageName: 'pages/home.ejs', email: null})
+})
 // 로그인 화면 추가
 router.get('/login', function(req, res, next) {
   res.render('index', { title: '로그인', pageName: 'auth/login.ejs', email: null });
