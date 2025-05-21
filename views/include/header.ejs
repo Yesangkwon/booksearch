@@ -27,7 +27,7 @@
       <div class="d-flex">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item" id="login">
-            <a class="nav-link active" aria-current="page" href="#">로그인</a>
+            <a class="nav-link active" aria-current="page" href="/login">로그인</a>
           </li>              
           <li class="nav-item" id="myEmail" style="display: none;">
             <a class="nav-link active" aria-current="page" href="#">현사용자이메일주소</a>
@@ -42,6 +42,12 @@
   </div>
 </nav>
 <script type="module">
+  import {app} from '/javascripts/firebase.js'
+  import { getAuth } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js"
+  const auth = getAuth()
+  console.log(auth);
+//module 영역에서는 onclick에서 호출하는 함수가 호출이 안된다.
+//어떡하지? -> addEventListener
 //여기는 자바스크립트 영역이다.
 //localStorage에 email값이 있어?
 const myEmail = localStorage.getItem("email")
@@ -61,4 +67,31 @@ else{
   document.querySelector("#logout").style.display = 'none'
   document.querySelector("#myEmail").style.display = 'none'
 }
+//로그아웃 처리하기
+//1) 비번으로 로그인한 경우는 로그아웃 처리를 localStorage상태값을 지운다
+//2) 구글 계정으로 로그인 한 경우는 함수만 호출하면 됨.(비동기처리 -> 지연 발생)
+//로그인에 대한 상태값의 관리 책임이 구글에 있다.
+//여기서 logout은 a태그 입니다.
+  const logout = document.querySelector("#logout")
+  logout.addEventListener('click', async()=>{
+    console.log('logout호출 성공');
+    try{
+      //구글 계정으로 로그인을 했을 때 로그아웃 하는 방법임.
+      await auth.signOut();
+      //비번으로 로그인을 했을 때는 내가 직접 localstorage를 삭제해서
+      //로그인 상태를 풀어준다.
+      localStorage.removeItem('email') // 이메일만 지움
+      //localStorage.clear() // 모두 다 지움
+      //카카오 로그인 일 때는 세션을 지워줘 - 서버에서 삭제 가능함.
+      //브라우저에서는 세션을 삭제할 수 없다.
+      //세션은 서버의 cache메모리에 저장되어 있으니까.
+      //라우터에게 요청을 해야한다.
+      //로그아웃이 성공하면 우리는 home으로 간다.
+      location.href='/home' //index.js
+    }
+    catch(error){
+      console.log('로그아웃 중 에러 발생',error);
+    }
+  })
+
 </script>

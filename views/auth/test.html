@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module테스트</title>
+</head>
+<body>
+  <button id="btnSend" type="button" onclick="send2()">
+    전송
+  </button>
+  <script type="text/javascript">
+    //여기는 무조건 됨
+    function send(){
+      console.log('전송호출 성공');
+    }
+    const methodA = () =>{
+      console.log('methodA호출');
+    }
+  </script>
+  <script type="module">
+    const btnSend = document.querySelector("#btnSend")
+    btnSend.addEventListener('click', () =>{
+      console.log('btnSend호출 성공');
+    })
+    function send2(){
+      console.log('전송2호출 성공');
+    }
+    const methodB = () =>{
+      console.log('methodB호출');
+      methodA()
+    }
+    methodB()
+  </script>
+</body>
+</html>

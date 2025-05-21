@@ -65,6 +65,32 @@
     });
   }) // 이메일과 비번으로 로그인 하기
 
+  //구글 계정으로 로그인 하기
+  //구글 로그인 화면은 구글 서버에서 제공함.
+  //구글 로그인이 풀렸는지 아니면 유지되고 있는지 상태 체크도 구글이 함
+  //그래서 나는 굳이 localStorage상태 정보를 관리할 필요가 없다.
+  const google = document.querySelector('#google')
+  google.addEventListener('click', async() =>{
+    try{
+      //구글 로그인이 성공하면 구글 서버가 응답으로 프로필 정보를 주입해줌.
+      const user = await loginGoogle(authLogic.auth, authLogic.googleProvider)
+      console.log(user.uid);
+      console.log(user.email);
+      console.log(user.displayName);
+      //물론 구글이 상태정보를 관리해주지만 header.ejs에 네비게이션바에
+      //이메일을 출력하므로 동일하게 localStorage저장함.
+      localStorage.setItem("email", user.email)
+      if(user.email){
+        location.href='/home'
+      }
+    }
+    catch(error){
+      //에러가 발생하면 여기가 실행됨
+      console.log('로그인 실패', error);
+    }
+  })//end of 구글 로그인
+
+
   //module을 선언하면 defer생략할 수 있다. - 비동기가 디폴트
   window.onLogin = async() => {
     console.log('onLogin');
