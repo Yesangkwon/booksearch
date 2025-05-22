@@ -3,3 +3,11 @@
     <h2>home page 입니다.</h2>
   </div>
 </div>
+<script type="module">
+    import {app} from '/javascripts/firebase.js'
+  import { getAuth } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js"
+  const auth = getAuth(app)
+  console.log('home.ejs호출성공');
+  const user = await onAuthChange(auth)
+  console.log("구글 로그인 상태정보");
+</script>

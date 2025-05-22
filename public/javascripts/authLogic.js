@@ -20,6 +20,16 @@ class AuthLogic{
 }
 export default AuthLogic
 
+//구글 계정 로그인은 로그인 상태를 관리하는 함수를 제공하고있다.
+//클래스 밖으로 함수를 뺀 이유는 매번 객체 생성을 하고 호출해야 하므로
+//객체 생성 없이도 수시로 호출하기 편리하도록 해 본다.
+export const onAuthChange = async(auth) => {
+  console.log('onAuth호출');
+  await auth.onAuthStateChanged(user => {
+    return user
+  })
+}
+
 export const loginKakao = () => {
   return new Promise((resolve, reject) => {
     resolve()

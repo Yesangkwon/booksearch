@@ -44,7 +44,7 @@
 <script type="module">
   import {app} from '/javascripts/firebase.js'
   import { getAuth } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js"
-  const auth = getAuth()
+  const auth = getAuth(app)
   console.log(auth);
 //module 영역에서는 onclick에서 호출하는 함수가 호출이 안된다.
 //어떡하지? -> addEventListener
@@ -80,8 +80,8 @@ else{
       await auth.signOut();
       //비번으로 로그인을 했을 때는 내가 직접 localstorage를 삭제해서
       //로그인 상태를 풀어준다.
-      localStorage.removeItem('email') // 이메일만 지움
-      //localStorage.clear() // 모두 다 지움
+      // localStorage.removeItem('email') // 이메일만 지움
+      localStorage.clear() // 모두 다 지움
       //카카오 로그인 일 때는 세션을 지워줘 - 서버에서 삭제 가능함.
       //브라우저에서는 세션을 삭제할 수 없다.
       //세션은 서버의 cache메모리에 저장되어 있으니까.
