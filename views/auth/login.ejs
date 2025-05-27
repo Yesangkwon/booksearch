@@ -23,7 +23,7 @@
           <button id="google" type="button" class="btn btn-primary w-100">Google</button>
         </div>
         <div class="my-3">
-          <button onclick="kakaoLogin(event)"  type="button">
+          <button onclick="kakaoLogin(event)" type="button" style="border: none; background: none; padding: 0; outline: none;">
         <img src="/images/kakao_login/ko/kakao_login_medium_wide.png" alt="카카오로그인"/>
       </button>
         </div>
@@ -96,7 +96,7 @@
   })//end of 구글 로그인
 
 
- const kakaoLogin = (event) => {
+  const kakaoLogin = (event) => {
     //화면이 새로고침 일어남.
     event.preventDefault();//submist이슈 해결. 이벤트 전이 막음 
     try {
