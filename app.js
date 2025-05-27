@@ -8,6 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var youtubeRouter = require('./routes/youtube');
+var calendarRouter = require('./routes/calendar');
 //객체를 생성해서 메모리에 올려놓을게
 //메모리에 상주하고 있어야 undefined가 발생하지 않는다.
 //이른 객체 주입 vs 게으른 객체 주입
@@ -59,6 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/youtube', youtubeRouter);
+app.use('/calendar', calendarRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

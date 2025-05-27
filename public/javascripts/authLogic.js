@@ -30,12 +30,12 @@ export default AuthLogic
 //에러가 발생하면 reject콜백함수를 호출함
 export const onAuthChange = (auth) => {
   console.log('onAuth호출');
-  return new Promise(()=>{
-    auth.onAuthStateChanged(user =>{
+  return new Promise((resolve, reject) => {
+    auth.onAuthStateChanged(user => {
       console.log(user);
       //Promise에서는 요청이 성공하면 resolve 함수를 호출해줌
       //요청한 곳으로 반환해줄 값이 존재하면 파라미터 자리에 넣어줌
-      resolve(user)
+      resolve(user);
     })
   })
 }

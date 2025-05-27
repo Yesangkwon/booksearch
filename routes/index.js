@@ -24,4 +24,9 @@ router.get('/home', function(req, res, next){
 router.get('/login', function(req, res, next) {
   res.render('index', { title: '로그인', pageName: 'auth/login.ejs', email: null });
 });
+/* 카카오 로그인 Redirect설정 */
+router.get('/auth/kakao/claaback', function(req, res, next) {
+  res.render('index', { title: '로그인', pageName: 'auth/login.ejs', email: null });
+});
+
 module.exports = router;
