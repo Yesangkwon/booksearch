@@ -33,6 +33,14 @@
             <li><a class="dropdown-item" href="/youtube/step3">버전3</a></li>
           </ul>
         </li>
+        <!-- ================   [인증후 노출]   ================= -->
+        <li class="nav-item" id="cart" style="display:none;">
+          <a class="nav-link" href="/users/cart">장바구니</a>
+        </li>
+        <li class="nav-item" id="mypage" style="display:none;">
+          <a class="nav-link" href="/users/mypage">Mypage</a>
+        </li>
+        <!-- ================   [인증후 노출]   ================= -->
       </ul>
       <!-- 로그인, 로그아웃, 로그인한 이메일주소 -->
       <div class="d-flex">
@@ -70,6 +78,8 @@ if(myEmail){//email이 존재한다. 그러면 로그인을 한 사람이다.
   //로그인은 안보이게 로그아웃은 보이게하고 또 이메일도 출력해준다. 
   document.querySelector("#login").style.display = 'none'
   document.querySelector("#logout").style.display = 'block'
+  document.querySelector("#mypage").style.display = 'block'
+  document.querySelector("#cart").style.display = 'block'
   document.querySelector("#myEmail").style.display = 'block'
   document.querySelector("#myEmail").querySelector("a").textContent = myEmail
 }
@@ -77,6 +87,8 @@ else{
   document.querySelector("#login").style.display = 'block'
   document.querySelector("#logout").style.display = 'none'
   document.querySelector("#myEmail").style.display = 'none'
+  document.querySelector("#mypage").style.display = 'none'
+  document.querySelector("#cart").style.display = 'none'
 }
 //로그아웃 처리하기
 //1) 비번으로 로그인한 경우는 로그아웃 처리를 localStorage상태값을 지운다

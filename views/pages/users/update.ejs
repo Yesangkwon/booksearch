@@ -1,0 +1,82 @@
+<div class="row my-5">
+  <div class="col">
+    <h1 class="text-center mb-5">회원정보수정</h1>
+    <div class="card p-5">
+      <form name="frm" method="post">
+        <div class="input-group my-2">
+          <div class="input-group-text px-5">성명</div>
+          <input class="form-control" id="name" value="나잘난" />
+        </div>
+        <div class="input-group my-2">
+          <div class="input-group-text px-5">주소</div>
+          <input
+            class="form-control"
+            name="address"
+            value="서울특별시 금천구 가산디지털2로"
+          />
+        </div>
+        <div class="input-group my-2">
+          <div class="input-group-text px-5">전화</div>
+          <input class="form-control" id="phone" value="010-1010-2020" />
+        </div>
+        <div>
+          <img id="fileName" src="https://placehold.co/200x200" width="30%" />
+          <input class="form-control mt-2" type="file" id="file" />
+        </div>
+        <div class="text-center mt-3">
+          <button class="btn-primary btn px-5">정보수정</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="module">
+  import { app } from '/javascripts/firebase.js'
+  import { getFirestore, setDoc, doc, clollection, getDoc } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js"
+  const db = getFirestore(app)
+  //사용자 구분 키값은 uid로 한다. - 구글로그인시에 발급됨.
+  //브라우저가 웹 표준을 준수하고 있어서 생략이 가능함.
+  const uid = window.localStorage.getItem('uid')
+  //사용자가 입력한 값을 새로 읽어온다. - id사용
+  const form = document.querySelector('#form')
+  const name = document.querySelector('#name')
+  const phone = document.querySelector('#phone')
+  const address = document.querySelector('#address')
+  //수정처리 - 있는 정보를 수정하므로 화면을 열기 전에 DB 서버를 경유한다.
+  //action(조회) -> 화면 -> action(덮어쓰기기) -> 화면
+  //입력처리 - 없는데 새로운 값을 입력한다.
+  //입력처리일 때는 화면을 열기 전에 DB 서버를 경유하지 않는다.
+  //화면 -> action -> 화면
+  //수정하기일 때는 입력일 때와 다르게 Firestore에 접속하여
+  //기존 사용자 정보를 가져와서 화면에 출력한다.
+  const snapshot = await getDoc(doc(db, `user/${uid}`))
+  if(snapshot.data()){
+    const user = snapshot.data()
+    name.value = user.name
+    phone.value = user.phone
+    address.value = user.address
+    //사진이 존재하면...
+    if(user.photo){
+      //insert here
+
+    }
+  }//end of if
+  //폼 제출 이벤트 처리
+  form.addEventListener('submit', async(e)=>{
+    e.preventDefault() //submit 이슈 방어하기
+    if(window.confirm('변경 사항을 수정 하겠습니까?')){
+      const name = name.value;
+      const address = address.value;
+      const phone = phone.value;
+      //첨부파일이 있을 때와 없을 때 처리하기 루틴이 달라져야 한다.
+      await setDoc(doc(db,`user/${uid}`),{
+        name: name,
+        address: address,
+        phone: phone,
+        photo: url,
+      })
+      alert('사용자 정보가 변경되었습니다.')
+      window.location.href='/users/mypage'
+    }
+  })//end of outter if
+</script>

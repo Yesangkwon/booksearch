@@ -47,7 +47,6 @@
   Handlebars.registerHelper("book", function(book){
     return JSON.stringify(book)
   })
-
 </script>
 <!-- 페이지 네비게이션 버튼 -->
 <div class="text-center mt-2">
@@ -56,7 +55,6 @@
   <button class="btn btn-primary btn-sm px-5" id="next">다음</button>
 </div>
 <!-- 페이지 네비게이션 버튼 -->
-
 <!-- 데이터 가져오기[back-end] -->
 <script type="module">
   //파이어베이스 API활용 - 장바구니 구현, 공지사항 구현, 게시판 구현
@@ -64,12 +62,14 @@
   import { getDatabase } from "https://www.gstatic.com/firebasejs/11.7.3/firebase-database.js"
   const db = getDatabase(app)
   console.log(db);
+  //페이지 상태 값을 담음
   let page = 1
   let query
   const listEl = document.querySelector('#list_book')
   //listEl은 핸들바스로 가져온 목록 전체
   //목록 영역 클릭 이벤트(장바구니 & 도서이미지)
   listEl.addEventListener('click', (e) =>{
+    // console.log('도서목록 클릭 이벤트 호출');
     //이벤트 소스 타겟
     //타겟에 따라서 장바구니 처리와 이미지를 클릭 모달 처리를 해야 한다. - 분기
     const target = e.target
@@ -104,11 +104,27 @@
   //도서검색 리스트 조회 함수 구현
   //카카오 도서검색 URL 요청하기 - 비동기 처리
   const lisetEl = document.querySelector('#list_book')
+  const pageEl = document.querySelector('#page') //현재 위치 상태값
+  const prevBtn = document.querySelector('#prev') //이전버튼
+  const nextBtn = document.querySelector('#next') //다음버튼
+
+  //페이지에 대한 상태값이 바뀌면 화면도 다시 렌더링 해야 한다.
+  //다시 렌더링 -> getBookList -> 검색결과 출력할 때
+  //페이지 네비게이션
+  nextBtn.addEventListener('click', ()=> {
+    page++
+    getBookList()
+  })
+  prevBtn.addEventListener('click', ()=> {
+    page--
+    getBookList()
+  })
+  
   const getBookList = () => {
     const book_url = new URL('https://dapi.kakao.com/v3/search/book')
     book_url.searchParams.set('target', 'title')
     book_url.searchParams.set('query', query)
-    book_url.searchParams.set('page', 5)
+    book_url.searchParams.set('page', page)
     book_url.searchParams.set('size', 6)
 
     //카카오 서버와 통신하기
@@ -124,7 +140,13 @@
       const isEnd = result.meta.is_end;
       const total = result.meta.total_count;
       const last = Math.ceil(total / 6)
-      console.log(`${isEnd} ${total} ${last}`);
+      console.log(`${isEnd}, ${total}, ${last}`);
+
+      pageEl.textContent = `${page}/${last}`
+      //만일 마지막 페이지라면 다음버튼은 비활성화 한다.
+      //현재가 1페이지라면 이전페이지는 없다. - 비활성화 처리
+      prevBtn.disabled = (page === 1)
+      nextBtn.disabled = isEnd
     })
     .catch((error) => console.error(error));
 
